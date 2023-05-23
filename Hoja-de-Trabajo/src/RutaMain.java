@@ -6,7 +6,11 @@ public class RutaMain {
   public static void main(String[] args) {
 	  System.out.println("Ingrese la ruta del archivo ej C:\\ejemplos\\example1.txt");
 	  Scanner in = new Scanner(System.in);
-	  String fpath = in.nextLine();
+	  String fpath = in.nextLine(); 
+    int infinitio = Integer.MAX_VALUE;
+    //BuenosAires SaoPaulo 10 15 20 50
+    //int[][] myNumbers = { {1, 2, 3, 4}, {5, 6, 7} };
+    String[] listastring = new String[6];
 	  
     try {
       File myObj = new File(fpath);
@@ -14,6 +18,13 @@ public class RutaMain {
       while (myReader.hasNextLine()) {
         String data = myReader.nextLine();
         System.out.println(data);
+        listastring = data.split(" ");
+        System.out.println(listastring);
+        int[][] tiempos = { {0, infinitio, infinitio, infinitio}, {5, infinitio, infinitio} };
+        int[][] lluvia = { {1, 2, 3, 4}, {5, 6, 7} };
+        int[][] nieve = { {1, 2, 3, 4}, {5, 6, 7} };
+        int[][] tormenta = { {1, 2, 3, 4}, {5, 6, 7} };
+
       }
       myReader.close();
     } catch (FileNotFoundException e) {
