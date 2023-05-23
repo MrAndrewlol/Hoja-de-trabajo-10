@@ -2,24 +2,70 @@
  * 
  */
 
+import java.util.HashMap;
+
 /**
- * @author MAAG
+ * @author JAPM
  *
  */
 public class FloydWarshall {
 
-	private int[][] distancias;
-	private String[][] recorridos;
-	private String[] vertices;
-	private int SIZE;
+	private HashMap<String, Integer> nodos;
+    private Integer[][] matriz;
+    private Integer[][] matrizFloyd;
+    private String[][] path;
+    private String[][] caminosFloyd;
+    private HashMap<Integer, String> nodosColum;
 	
-	public FloydWarshall(int [][]_distancias, String[][] _recorridos, int matriz_size) {
-		SIZE = matriz_size;
-		distancias = _distancias;
-		recorridos = _recorridos;
-		vertices = new String[matriz_size];
-		for (int i = 0; i < matriz_size; i++) {
-			vertices[i] = _recorridos[0][i];
+	public FloydWarshall(HashMap<String, Integer> nodos, HashMap<Integer,String> nodosColum, int tamaño) {
+		this.nodos = nodos;
+		this.nodosColum = nodosColum;
+		matriz = new Integer[tamaño][tamaño];
+		path = new String[tamaño][tamaño];
+		for (int i = 0; i < tamaño; i++) {
+			for (int j = 0; j < tamaño; j++) {
+				if (i != j)
+					path[i][j] = nodosColum.get(j+1);
+			}
+		}
+		for (int i = 0; i < tamaño; i++){
+			for (int j = 0; j< tamaño; j++) {
+				if ( i == j)
+					matriz[i][j] = 0;
+			}
+		}
+		
+		
+	}
+
+	public void setMatriz(int f, int c, int tamaño){
+		matriz[f][c] = tamaño;
+	}
+
+	public void Warshall() {
+		int size = nodos.size();
+		matrizFloyd = new Integer[size][size];
+		caminosFloyd = new String[size][size];
+		for (int i = 0; i < size; i++){
+			for (int j = 0; j < size; j++) {
+				matrizFloyd[i][j] = matriz[i][j];
+				caminosFloyd[i][j] = path[i][j];
+			}
+		}
+		for (int k = 0; k < nodos.size(); k++){
+			for (int j = 0; j < nodos.size(); j++){
+				for (int i = 0; i < nodos.size(); i++) {
+					if (matrizFloyd[i][j] != null && matrizFloyd[i][k] != null && matrizFloyd[k][j] != null){
+						if (matrizFloyd[i][j] > (matrizFloyd[i][k] + matrizFloyd[k][j])){
+							matrizFloyd[i][j] = matrizFloyd[i][k] + matrizFloyd[k][j];
+                            caminosFloyd[i][j] = nodosColum.get(k + 1);
+						}
+					}
+					if (matrizFloyd[i][j] == null && !(matrizFloyd[i][k] == null || matrizFloyd[k][j] == null)) {
+                        matrizFloyd[i][j] = matrizFloyd[i][k] + matrizFloyd[k][j];
+                        caminosFloyd[i][j] = nodosColum.get(k + 1);
+				} 
+			}
 		}
 	}
 
