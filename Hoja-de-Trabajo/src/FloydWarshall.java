@@ -2,6 +2,8 @@
  * 
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -42,6 +44,15 @@ public class FloydWarshall {
 		matriz[f][c] = tamaño;
 	}
 
+	public void setInterrupcion(int x, int y) {
+		matriz[x][y] = null;
+		path[x][y] = null;
+	}
+
+	public void setPath(int x, int y) {
+		path[x][y] = nodosColum.get(y);
+	}
+
 	public void Warshall() {
 		int size = nodos.size();
 		matrizFloyd = new Integer[size][size];
@@ -64,68 +75,44 @@ public class FloydWarshall {
 					if (matrizFloyd[i][j] == null && !(matrizFloyd[i][k] == null || matrizFloyd[k][j] == null)) {
                         matrizFloyd[i][j] = matrizFloyd[i][k] + matrizFloyd[k][j];
                         caminosFloyd[i][j] = nodosColum.get(k + 1);
-				} 
-			}
-		}
-	}
-
-	/**
-	 * @return the distancias
-	 */
-	public int[][] getDistancias() {
-		return distancias;
-	}
-
-	/**
-	 * @param distancias the distancias to set
-	 */
-	public void setDistancias(int[][] distancias) {
-		this.distancias = distancias;
-	}
-
-	/**
-	 * @return the recorridos
-	 */
-	public String[][] getRecorridos() {
-		return recorridos;
-	}
-
-	/**
-	 * @param recorridos the recorridos to set
-	 */
-	public void setRecorridos(String[][] recorridos) {
-		this.recorridos = recorridos;
-	}
-
-	/**
-	 * @return the sIZE
-	 */
-	public int getSIZE() {
-		return SIZE;
-	}
-
-	/**
-	 * @param sIZE the sIZE to set
-	 */
-	public void setSIZE(int sIZE) {
-		SIZE = sIZE;
-	}
-	
-	public void CalcularRutas() {
-		for (int i = 0; i < SIZE; i++) { //Que fila y que columna trabajo
-			for (int j = 0; j < SIZE; j++) {
-				for (int k = 0; k < SIZE; k++) {
-					
-					if ((i != j) && (i != k)) {
-						int suma = distancias[j][i] + distancias[i][k]; 
-						if (suma < distancias[j][k]) {
-							distancias[j][k] = suma;
-							recorridos[j][k] = vertices[i];
-						}
-					}
-					
+					} 
 				}
 			}
 		}
+	}
+
+	public String ruta(int x, int y) {
+		String peso =null, mensaje = "\nNo existe el recorrido";
+		if (caminosFloyd[x][y] != null) {
+			peso = matrizFloyd[x][y].toString();
+			mensaje = "\nEl recorrido va de " + nodosColum.get(x + 1);
+			while (x != y) {
+				if (caminosFloyd[x][y] != null) {
+					mensaje += " a " + caminosFloyd[x][y];
+					x = nodos.get(caminosFloyd[x][y]) - 1;
+				}
+			}
+			mensaje += " con una trayectoria de " + peso;
+		}
+		return mensaje;
+	}
+
+	public String centro() {
+		String mensaje = "\nEl centro del grafo es: ";
+		ArrayList<Integer> caminos = new ArrayList<Integer>();
+		int sum = 0;
+		for (int i = 0; i < nodos.size(); i++) {
+			sum = 0;
+			for (int j = 0; j < nodos.size(); j++) {
+				if (matrizFloyd[j][i] != null)
+					sum += matrizFloyd[j][i];
+				else	sum += Integer.MAX_VALUE/2;
+			}
+			caminos.add(sum);
+		}
+		ArrayList<Integer> orden = caminos;
+		Collections.sort(orden);
+		mensaje += nodosColum.get(caminos.indexOf(orden.get(0)) + 1);
+		return mensaje;
 	}
 }
