@@ -12,13 +12,13 @@ public class RutaMain {
     boolean ejecucion = true;
 
     FloydWarshall grafo;
-    App funciones = new App();
 
     HashMap<String, Integer> nodos = new HashMap<String, Integer>();
     HashMap<Integer, String> nodosColum = new HashMap<Integer, String>();
     ArrayList<String> filas = new ArrayList<String>();
     int tamaño = 0;
     String[] lista;
+    String ciudad1, ciudad2;
 
     try {
       File myObj = new File(fpath);
@@ -90,12 +90,58 @@ public class RutaMain {
                       System.out.println("\nIngrese la nueva distancia entre las ciudades: ");
                       int newDistance = in.nextInt();
                       in.nextLine();
-                      grafo.setMatriz(nodos.get(fila) - 1, nodos.get(fila) - 1, newDistance);
-                      grafo.setPath(nodos.get(fila) - 1, nodos.get(columna) - 1);
+                      grafo.setMatriz(nodos.get(fila) - 1, nodos.get(fila), newDistance);
+                      grafo.setPath(nodos.get(fila) - 1, nodos.get(columna));
                       grafo.Warshall();
                       break;
                   
                     case 3:
+                    System.out.println("\nIngrese ciudad de inicio: ");
+                    ciudad1 = in.nextLine();
+                    System.out.println("\nIngrese la ciudad de destino: ");
+                    ciudad2 = in.nextLine();
+                    System.out.println("\nEscriba uno de los siguientes climas: Lluvia/Nieve/Tormenta");
+                    String clima = in.nextLine().toLowerCase();
+
+                    switch (clima) {
+                      case "lluvia":
+                        for (String linea : filas) {
+                            lista = linea.split(" ");
+                            if (ciudad1.equalsIgnoreCase(lista[0]) && ciudad2.equalsIgnoreCase(lista[1])){
+                              tamaño = Integer.valueOf(lista[3]); 
+                              grafo.setLluvia(nodos.get(ciudad1) - 1, nodos.get(ciudad2) - 1, tamaño);
+                              grafo.Warshall();
+                            }
+                        }
+                        break;
+
+                      case "nieve":
+                        for (String linea : filas) {
+                          lista = linea.split(" ");
+                          if (ciudad1 == lista[0] && ciudad2 == lista[1]){
+                            tamaño = Integer.valueOf(lista[4]); 
+                          }
+                        }
+                        grafo.setLluvia(nodos.get(ciudad1) - 1, nodos.get(ciudad2), tamaño);
+                        grafo.Warshall();
+                        break;
+
+                      case "tormenta":
+                        for (String linea : filas) {
+                          lista = linea.split(" ");
+                          if (ciudad1 == lista[0] && ciudad2 == lista[1]){
+                            tamaño = Integer.valueOf(lista[5]); 
+                          }
+                        }
+                        grafo.setLluvia(nodos.get(ciudad1) - 1, nodos.get(ciudad2), tamaño);
+                        grafo.Warshall();
+                        break;
+                    
+                      default:
+                        System.out.println("\nEste clima no esta registrado");
+                        break;
+                    }
+
                       break;
   
                   default:

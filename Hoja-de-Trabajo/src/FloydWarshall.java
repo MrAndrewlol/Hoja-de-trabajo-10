@@ -49,6 +49,18 @@ public class FloydWarshall {
 		path[x][y] = null;
 	}
 
+	public void setLluvia(int x, int y, int distance){
+		matriz[x][y] = distance;
+	}
+
+	public void setNieve(int x, int y, int distance){
+		matriz[x][y] = distance;
+	}
+
+	public void setTormenta(int x, int y, int distance){
+		matriz[x][y] = distance;
+	}
+
 	public void setPath(int x, int y) {
 		path[x][y] = nodosColum.get(y);
 	}
