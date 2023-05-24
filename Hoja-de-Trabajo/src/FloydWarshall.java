@@ -1,14 +1,10 @@
-/**
- * 
- */
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 /**
  * @author JAPM
- *
+ *Algoritmos y Estructura de Datos
  */
 public class FloydWarshall {
 
@@ -19,6 +15,12 @@ public class FloydWarshall {
     private String[][] caminosFloyd;
     private HashMap<Integer, String> nodosColum;
 	
+	/**
+	 * Construtor
+	 * @param nodos
+	 * @param nodosColum
+	 * @param tamaño
+	 */
 	public FloydWarshall(HashMap<String, Integer> nodos, HashMap<Integer,String> nodosColum, int tamaño) {
 		this.nodos = nodos;
 		this.nodosColum = nodosColum;
@@ -40,31 +42,69 @@ public class FloydWarshall {
 		
 	}
 
+	
+	/** 
+	 * @param f
+	 * @param c
+	 * @param tamaño
+	 * Cambia un valor de la matriz de distancia
+	 */
 	public void setMatriz(int f, int c, int tamaño){
 		matriz[f][c] = tamaño;
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * Cambia un valor de la matriz de distancia a nulo para crear una interrupción en el camino	 
+	 */
 	public void setInterrupcion(int x, int y) {
 		matriz[x][y] = null;
 		path[x][y] = null;
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @param distance
+	 * Cambia el valor de un recorrido por el de lluvia
+	 */
 	public void setLluvia(int x, int y, int distance){
 		matriz[x][y] = distance;
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @param distance
+	 * ambia el valor de un recorrido por el de nieve
+	 */
 	public void setNieve(int x, int y, int distance){
 		matriz[x][y] = distance;
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @param distance
+	 * ambia el valor de un recorrido por el de tormenta
+	 */
 	public void setTormenta(int x, int y, int distance){
 		matriz[x][y] = distance;
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * Cambia un valor de la matriz del nombre de ciudades
+	 */
 	public void setPath(int x, int y) {
 		path[x][y] = nodosColum.get(y);
 	}
 
+	/**
+	 * Algoritmo Floyd Warshall
+	 */
 	public void Warshall() {
 		int size = nodos.size();
 		matrizFloyd = new Integer[size][size];
@@ -93,6 +133,12 @@ public class FloydWarshall {
 		}
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @return
+	 * Devuelve el recorrido hecho de una ciudad a otra
+	 */
 	public String ruta(int x, int y) {
 		String peso =null, mensaje = "\nNo existe el recorrido";
 		if (caminosFloyd[x][y] != null) {
@@ -109,6 +155,10 @@ public class FloydWarshall {
 		return mensaje;
 	}
 
+	/**
+	 * Calcula el centro del grafo
+	 * @return
+	 */
 	public String centro() {
 		String mensaje = "\nEl centro del grafo es: ";
 		ArrayList<Integer> caminos = new ArrayList<Integer>();
