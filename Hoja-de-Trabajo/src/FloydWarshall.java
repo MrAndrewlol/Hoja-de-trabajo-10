@@ -53,6 +53,16 @@ public class FloydWarshall {
 		matriz[f][c] = tamaño;
 	}
 
+
+
+	public Integer[][] getMatriz() {
+		return this.matriz;
+	}
+
+
+
+
+
 	/**
 	 * @param x
 	 * @param y
@@ -62,6 +72,7 @@ public class FloydWarshall {
 		matriz[x][y] = null;
 		path[x][y] = null;
 	}
+
 
 	/**
 	 * @param x
